@@ -1,0 +1,31 @@
+/* ClicksStats.module.css */
+
+.pulse {
+  animation: pulse 1s infinite;
+}
+
+.highlight {
+  animation: highlight-background 1.5s ease-out;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 30px rgba(255, 0, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+  }
+}
+
+@keyframes highlight-background {
+  0% {
+    background-color: rgba(255, 0, 0, 0.2);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
