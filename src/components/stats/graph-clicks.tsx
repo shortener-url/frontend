@@ -36,11 +36,23 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export default function GraphClicks({ clicksData, timeZone }: { clicksData: Click[], timeZone:string }) {
-  const [timeRange, setTimeRange] = React.useState("24h");
-
+export default function GraphClicks({
+  clicksData,
+  timeZone,
+  timeRange,
+  setTimeRange,
+}: {
+  clicksData: Click[];
+  timeZone: string;
+  timeRange: string;
+  setTimeRange: (value: string) => void;
+}) {
   const groupedData = React.useMemo(() => {
-    return groupByInterval(clicksData, timeRange==="24h"? "hour":"day", timeZone);
+    return groupByInterval(
+      clicksData,
+      timeRange === "24h" ? "hour" : "day",
+      timeZone
+    );
   }, [clicksData, timeRange, timeZone]);
 
   return (

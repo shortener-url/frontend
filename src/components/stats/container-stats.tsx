@@ -1,7 +1,6 @@
 import { GetStatsByShortCode } from "@/lib/action";
 import ClicksStats from "./click-stats";
 import { DateTime } from "luxon";
-import Link from "next/link";
 
 export default async function ContainerStats({
   keyShort,
@@ -12,14 +11,14 @@ export default async function ContainerStats({
   const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   // console.log("ContainerStats: ", keyShort);
   const now = DateTime.now().setZone(timeZone);
-  const threeMonthsAgo = now.minus({ months: 3 });
+  const last24Hours = now.minus({ hours: 24 });
 
   // Convertir a formato ISO y asegurar que no sea null
   const nowFormatted = now.toFormat("yyyy/MM/dd");
-  const threeMonthsAgoFormatted = threeMonthsAgo.toFormat("yyyy/MM/dd");
+  const last24HoursFormatted = last24Hours.toFormat("yyyy/MM/dd");
   const rest = await GetStatsByShortCode(
     keyShort,
-    threeMonthsAgoFormatted,
+    last24HoursFormatted,
     nowFormatted
   );
   if (rest.status === "error") {
@@ -31,7 +30,7 @@ export default async function ContainerStats({
   const initialClicks =
     rest.data && rest.data?.length > 0 ? rest.data[0].clicks : [];
   return (
-    <div>            
+    <div>
       <div className="flex flex-col pt-5 min-h-screen items-center gap-10">
         <ClicksStats
           keyShort={keyShort}
