@@ -6,7 +6,7 @@ export default function Home() {
             <Link href="/" title="Home">
                 <h1 className="text-4xl font-bold text-yellow-400">URL Shortener</h1>
             </Link>
-            <h3 className="text-gray-500">Simple and Fast</h3>
+            <h3 className="text-gray-500 text-center">Simple and Fast</h3>
         </div>
     );
 }
