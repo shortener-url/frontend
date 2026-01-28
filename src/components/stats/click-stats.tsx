@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import styles from "@/components/stats/clicks-stats.module.css";
 import { DateTime } from "luxon";
-import Link from "next/link";
+import Home from "@/components/home";
 
 export default function ClicksStats({
   keyShort,
@@ -103,10 +103,8 @@ export default function ClicksStats({
   return (
     <div className="flex flex-col min-h-screen items-center gap-10 w-full">
       <div>
-        <div className="text-center">
-          <Link href="/" className="text-3xl" title="home" data-umami-event={`Stats to home`}>
-            <span className="icon-[material-symbols--home]"></span>
-          </Link>
+        <div className="mb-6">
+          <Home />
         </div>
         <Select onValueChange={handleSelectChange} data-umami-event={`Change refresh interval`}>
           <SelectTrigger className="w-[180px]">

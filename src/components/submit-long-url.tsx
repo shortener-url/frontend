@@ -27,8 +27,8 @@ export default function SubmitLongUrl({
         control={control}
         name="newLongUrl"
         render={({ field }) => (
-          <FormItem>
-            <FormLabel>Long URL</FormLabel>
+          <FormItem className="relative pb-4">
+            <FormLabel className="!text-foreground">Long URL</FormLabel>
             <FormControl>
               <AutoResizeTextarea
                 {...field}
@@ -36,7 +36,7 @@ export default function SubmitLongUrl({
                 onChange={field.onChange}
               />
             </FormControl>
-            <FormMessage />
+            <FormMessage className="absolute left-0 top-20 text-red-600" />
           </FormItem>
         )}
       />
