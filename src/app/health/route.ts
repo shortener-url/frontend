@@ -4,13 +4,17 @@ export const runtime = "nodejs";
 type DependencyStatus = "ok" | "degraded" | "unavailable";
 
 export async function GET() {
-    const baseUrl = process.env.URL_BACKEND?.trim().replace(/\/+$/, "");    
+    const baseUrl = process.env.URL_BACKEND?.trim();
     let dependencyStatus: DependencyStatus = "unavailable";
     let statusCode: number | null = null;
 
     if (baseUrl) {
         try {            
-            const response = await fetch(`${baseUrl}/health`, {
+            const healthUrl = new URL(baseUrl);
+            healthUrl.pathname = "/health";
+            healthUrl.search = "";
+            healthUrl.hash = "";
+            const response = await fetch(healthUrl, {
                 method: "GET",
                 cache: "no-store",
                 signal: AbortSignal.timeout(4000),
