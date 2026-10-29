@@ -1,4 +1,5 @@
 'use server'
+import { headers } from "next/headers";
 import logger from "./logger";
 import { fetchAPI } from "./utils";
 
@@ -37,24 +38,25 @@ export async function shorten(newLongUrl: string, recaptchaToken: string): Promi
 
 }
 
-interface ClientInfo {
-    userAgent: string;
-    referer: string;
-    ip: string;
-}
-
-
-export async function GetUrlLongByShortCode(shortCode: string, clientInfo: ClientInfo): Promise<UrlResponse> {
+export async function GetUrlLongByShortCode(shortCode: string): Promise<UrlResponse> {
     logger.info(`GetUrlLongByShortCode: ${shortCode}`);
     try {
         const url = `${process.env.URL_BACKEND}/${shortCode}`
+        const requestHeaders = headers();
+        const forwardedFor = requestHeaders.get("x-forwarded-for");
+        const clientIp = requestHeaders.get("cf-connecting-ip")
+            ?? forwardedFor?.split(",", 1)[0].trim()
+            ?? requestHeaders.get("x-real-ip");
+        const backendHeaders: Record<string, string> = {
+            'Content-Type': 'application/json',
+        };
+        const userAgent = requestHeaders.get("user-agent");
+        const referer = requestHeaders.get("referer");
+        if (userAgent) backendHeaders['User-Agent'] = userAgent;
+        if (referer) backendHeaders['Referer'] = referer;
+        if (clientIp) backendHeaders['X-Forwarded-For'] = clientIp;
         const options: RequestInit = {
-            headers: {
-                'Content-Type': 'application/json',
-                'User-Agent': clientInfo.userAgent,
-                'Referer': clientInfo.referer,
-                'X-Forwarded-For': clientInfo.ip,
-            },
+            headers: backendHeaders,
             method: 'GET',
             cache: "no-cache"
         };

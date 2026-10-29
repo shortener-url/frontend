@@ -8,8 +8,7 @@ export default function URLRedirect({ shortURL }: { shortURL: string }) {
   const [message, setMessage] = useState("Redirecting...");
   useEffect(() => {
     const initLoad = async () => {
-      const clientInfo = await fetchClientInfo();
-      const rest = await GetUrlLongByShortCode(shortURL, clientInfo);
+      const rest = await GetUrlLongByShortCode(shortURL);
       if (rest.status === "error") {
         setMessage(rest.message || "An error occurred while fetching URL");
       } else if (rest.data) {
@@ -27,15 +26,4 @@ export default function URLRedirect({ shortURL }: { shortURL: string }) {
       <div className="pt-8 text-2xl">{message}</div>
     </main>
   )
-}
-
-async function fetchClientInfo() {
-  const userAgent = navigator.userAgent;
-  const referer = document.referrer;
-
-  // Obtener IP del cliente desde un servicio externo si es necesario
-  const ipResponse = await fetch("https://api.ipify.org?format=json");
-  const { ip } = await ipResponse.json();
-
-  return { userAgent, referer, ip };
 }
